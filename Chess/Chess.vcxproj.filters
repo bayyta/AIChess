@@ -68,5 +68,8 @@
     <ClInclude Include="src\pieces\king.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\vec2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
