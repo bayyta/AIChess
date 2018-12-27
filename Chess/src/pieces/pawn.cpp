@@ -8,7 +8,8 @@ namespace chess {
 		lastTwoSteps = false;
 	}
 
-	int Pawn::getPossibleMoves(const Vec2<int>& kingPos, const std::shared_ptr<Piece> const (&board)[8][8], std::shared_ptr<Piece>(&cachedBoards)[26][8][8])
+	int Pawn::getPossibleMoves(const Vec2<int>& kingPos, const std::shared_ptr<Piece> const (&board)[8][8],
+		std::shared_ptr<Piece>(&cachedBoards)[27][8][8])
 	{
 		int count = 0;
 
@@ -19,9 +20,7 @@ namespace chess {
 		// can move forward?
 		if (board[pos.x][pos.y + dir] == nullptr)
 		{
-			duplicateBoard(board, cachedBoards[count]);
-			movePiece(pos.x, pos.y + dir, cachedBoards[count]);
-			if (!isChecked(kingPos, cachedBoards[count]))
+			if (getMove(pos.x, pos.y + dir, kingPos, board, cachedBoards[count]))
 				count++;
 		}
 
@@ -30,11 +29,11 @@ namespace chess {
 		{
 			if (board[pos.x][pos.y + dir * 2] == nullptr)
 			{
-				duplicateBoard(board, cachedBoards[count]);
-				movePiece(pos.x, pos.y + dir * 2, cachedBoards[count]);
-				std::dynamic_pointer_cast<Pawn>(cachedBoards[count][pos.x][pos.y + dir * 2])->lastTwoSteps = true;
-				if (!isChecked(kingPos, cachedBoards[count]))
+				if (getMove(pos.x, pos.y + dir * 2, kingPos, board, cachedBoards[count]))
+				{
+					std::dynamic_pointer_cast<Pawn>(cachedBoards[count][pos.x][pos.y + dir * 2])->lastTwoSteps = true;
 					count++;
+				}
 			}
 		}
 
@@ -46,9 +45,7 @@ namespace chess {
 			{
 				if (board[pos.x - 1][pos.y + dir]->isWhite != isWhite)
 				{
-					duplicateBoard(board, cachedBoards[count]);
-					movePiece(pos.x - 1, pos.y + dir, cachedBoards[count]);
-					if (!isChecked(kingPos, cachedBoards[count]))
+					if (getMove(pos.x - 1, pos.y + dir, kingPos, board, cachedBoards[count]))
 						count++;
 				}
 			}
@@ -78,9 +75,7 @@ namespace chess {
 			{
 				if (board[pos.x + 1][pos.y + dir]->isWhite != isWhite)
 				{
-					duplicateBoard(board, cachedBoards[count]);
-					movePiece(pos.x + 1, pos.y + dir, cachedBoards[count]);
-					if (!isChecked(kingPos, cachedBoards[count]))
+					if (getMove(pos.x + 1, pos.y + dir, kingPos, board, cachedBoards[count]))
 						count++;
 				}
 			}
@@ -104,6 +99,21 @@ namespace chess {
 
 
 		return count;
+	}
+
+	bool Pawn::getMove(const int& newX, const int& newY, const Vec2<int>& kingPos,
+		const std::shared_ptr<Piece> const (&board)[8][8], std::shared_ptr<Piece>(&cachedBoard)[8][8])
+	{
+		duplicateBoard(board, cachedBoard);
+		movePiece(newX, newY, cachedBoard);
+		if (newY == 0 || newY == 7)
+		{
+			// make queen
+			cachedBoard[newX][newY] = std::make_shared<Queen>(Vec2<int>{ newX, newY }, isWhite);
+		}
+		if (!isChecked(kingPos, cachedBoard))
+			return true;
+		return false;
 	}
 
 }

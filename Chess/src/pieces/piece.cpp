@@ -14,7 +14,7 @@ namespace chess {
 
 	bool Piece::isChecked(const Vec2<int>& kingPos, std::shared_ptr<Piece>(&board)[8][8])
 	{
-		std::vector<int> positions;
+		std::vector<Vec2<int>> positions;
 		positions.reserve(26);
 
 		for (int i = 0; i < 8; i++)
@@ -29,11 +29,11 @@ namespace chess {
 					{
 						positions.clear();
 						// get possible new positions
-						piece->getPositions(positions, board, false);
+						piece->getPositions(positions, board);
 						// check if 'positions' contains king's position
 						for (int k = 0; k < positions.size(); k += 2)
 						{
-							if (positions[k] == kingPos.x && positions[k + 1] == kingPos.y)
+							if (positions[k] == kingPos)
 							{
 								// opposing team can check, therefore return true
 								return true;
@@ -47,7 +47,8 @@ namespace chess {
 		return false;
 	}
 
-	void Piece::duplicateBoard(const std::shared_ptr<Piece> const (&copyFrom)[8][8], std::shared_ptr<Piece>(&copyTo)[8][8])
+	void Piece::duplicateBoard(const std::shared_ptr<Piece> const (&copyFrom)[8][8], 
+		std::shared_ptr<Piece>(&copyTo)[8][8])
 	{
 		for (int i = 0; i < 8; i++)
 		{
@@ -66,7 +67,17 @@ namespace chess {
 		cachedBoard[pos.x][pos.y] = nullptr;
 	}
 
-	void Piece::getPositions(std::vector<int>& outPositions, const std::shared_ptr<Piece> const (&board)[8][8], const bool& checkIfChecked)
+	bool Piece::getMove(const int& newX, const int& newY, const Vec2<int>& kingPos, 
+		const std::shared_ptr<Piece> const (&board)[8][8], std::shared_ptr<Piece>(&cachedBoard)[8][8])
+	{
+		duplicateBoard(board, cachedBoard);
+		movePiece(newX, newY, cachedBoard);
+		if (!isChecked(kingPos, cachedBoard))
+			return true;
+		return false;
+	}
+
+	void Piece::getPositions(std::vector<Vec2<int>>& outPositions, const std::shared_ptr<Piece> const (&board)[8][8])
 	{
 		return;
 	}

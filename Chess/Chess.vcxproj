@@ -124,6 +124,7 @@
     <ClCompile Include="src\pieces\piece.cpp" />
     <ClCompile Include="src\pieces\queen.cpp" />
     <ClCompile Include="src\pieces\rook.cpp" />
+    <ClCompile Include="src\pieces\runner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\board.h" />
@@ -134,6 +135,7 @@
     <ClInclude Include="src\pieces\piece.h" />
     <ClInclude Include="src\pieces\queen.h" />
     <ClInclude Include="src\pieces\rook.h" />
+    <ClInclude Include="src\pieces\runner.h" />
     <ClInclude Include="src\vec2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

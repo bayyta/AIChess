@@ -41,6 +41,14 @@ namespace chess {
 			return *this;
 		}
 
+		Vec2<T>& operator*(const int& mul)
+		{
+			this->x *= mul;
+			this->y *= mul;
+
+			return *this;
+		}
+
 		void add(const T& x, const T& y)
 		{
 			this->x += x;
@@ -51,6 +59,11 @@ namespace chess {
 		{
 			this->x += vec2.x;
 			this->y += vec2.y;
+		}
+
+		bool operator==(const Vec2& vec2)
+		{
+			return x == vec2.x && y == vec2.y;
 		}
 	};
 
