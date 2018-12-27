@@ -4,8 +4,8 @@ namespace chess {
 
 	void Rook::init()
 	{
-		type = 'R';
-		directions = { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 } };
+		_type = 'R';
+		_offsets = { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 } };
 	}
 
 }

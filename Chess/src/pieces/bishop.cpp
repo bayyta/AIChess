@@ -4,8 +4,8 @@ namespace chess {
 
 	void Bishop::init()
 	{
-		type = 'B';
-		directions = { { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } };
+		_type = 'B';
+		_offsets = { { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } };
 	}
 
 }

@@ -4,7 +4,7 @@ namespace chess {
 
 	void Pawn::init()
 	{
-		type = 'P';
+		_type = 'P';
 		lastTwoSteps = false;
 	}
 
@@ -25,7 +25,7 @@ namespace chess {
 		}
 
 		// can move two forward?
-		if ((pos.y == 1 && !isWhite) || (pos.y == 6 && isWhite))
+		if (_moveCount == 0)
 		{
 			if (board[pos.x][pos.y + dir * 2] == nullptr)
 			{
@@ -52,7 +52,7 @@ namespace chess {
 			// en passant 
 			if (board[pos.x - 1][pos.y] != nullptr)
 			{
-				if (board[pos.x - 1][pos.y]->type == 'P' && board[pos.x - 1][pos.y]->isWhite != isWhite)
+				if (board[pos.x - 1][pos.y]->getType() == 'P' && board[pos.x - 1][pos.y]->isWhite != isWhite)
 				{
 					if (std::dynamic_pointer_cast<Pawn>(board[pos.x - 1][pos.y])->lastTwoSteps)
 					{
@@ -82,7 +82,7 @@ namespace chess {
 			// en passant
 			if (board[pos.x + 1][pos.y] != nullptr)
 			{
-				if (board[pos.x + 1][pos.y]->type == 'P' && board[pos.x + 1][pos.y]->isWhite != isWhite)
+				if (board[pos.x + 1][pos.y]->getType() == 'P' && board[pos.x + 1][pos.y]->isWhite != isWhite)
 				{
 					if (std::dynamic_pointer_cast<Pawn>(board[pos.x + 1][pos.y])->lastTwoSteps)
 					{

@@ -23,7 +23,7 @@ namespace chess {
 	void Runner::getPositions(std::vector<Vec2<int>>& outPositions, const std::shared_ptr<Piece> const (&board)[8][8])
 	{
 		Vec2<int> newPos;
-		for (auto& dir : directions)
+		for (auto& dir : _offsets)
 		{
 			int i = 1;
 			newPos.x = pos.x + dir.x * i;
