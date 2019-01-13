@@ -2,8 +2,12 @@
 
 namespace chess {
 
+	Runner::Runner(const Vec2<int>& position, const bool& white)
+		: Piece(position, white)
+	{ }
+
 	int Runner::getPossibleMoves(const Vec2<int>& kingPos, const std::shared_ptr<Piece> const (&board)[8][8],
-		std::shared_ptr<Piece>(&cachedBoards)[27][8][8])
+		std::shared_ptr<Piece>(&cachedBoards)[27][8][8]) const
 	{
 		int count = 0;
 
@@ -21,6 +25,7 @@ namespace chess {
 	}
 
 	void Runner::getPositions(std::vector<Vec2<int>>& outPositions, const std::shared_ptr<Piece> const (&board)[8][8])
+		const
 	{
 		Vec2<int> newPos;
 		for (auto& dir : _offsets)
@@ -32,7 +37,7 @@ namespace chess {
 			{
 				continue;
 			}
-			while (board[newPos.x][newPos.y] == nullptr)
+			while (board[newPos.y][newPos.x] == nullptr)
 			{
 				// can move to
 				outPositions.push_back(newPos);
@@ -47,7 +52,7 @@ namespace chess {
 			}
 			if (i >= 0)
 			{
-				if (board[newPos.x][newPos.y]->isWhite != isWhite)
+				if (board[newPos.y][newPos.x]->isWhite != isWhite)
 				{
 					// can capture piece
 					outPositions.push_back(newPos);

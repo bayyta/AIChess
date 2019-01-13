@@ -6,7 +6,9 @@ namespace chess {
 	class Bishop : public Runner
 	{
 	private:
-		void init();
+		void getCopy(std::shared_ptr<Piece>& copyTo) const override;
+	public:
+		Bishop(const Vec2<int>& position, const bool& white);
 	};
 
 }

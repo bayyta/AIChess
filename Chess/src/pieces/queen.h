@@ -3,11 +3,12 @@
 
 namespace chess {
 
-	class
-		Queen : public Runner
+	class Queen : public Runner
 	{
 	private:
-		void init();
+		void getCopy(std::shared_ptr<Piece>& copyTo) const override;
+	public:
+		Queen(const Vec2<int>& position, const bool& white);
 	};
 
 }

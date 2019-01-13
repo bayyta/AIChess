@@ -2,14 +2,15 @@
 
 namespace chess {
 
-	void King::init()
+	King::King(const Vec2<int>& position, const bool& white)
+		: Piece(position, white)
 	{
 		_type = 'K';
 		_offsets = { {0, -1}, {1, 0}, {0, 1}, {-1, 0} };
 	}
 
 	int King::getPossibleMoves(const Vec2<int>& kingPos, const std::shared_ptr<Piece> const (&board)[8][8],
-		std::shared_ptr<Piece>(&cachedBoards)[27][8][8])
+		std::shared_ptr<Piece>(&cachedBoards)[27][8][8]) const
 	{
 		int count = 0;
 
@@ -17,12 +18,13 @@ namespace chess {
 		// normal moves
 		for (auto& o : _offsets)
 		{
-			newPos = pos + o;
+			newPos.x = pos.x + o.x;
+			newPos.y = pos.y + o.y;
 			if (newPos.x < 0 || newPos.x >= 8 || newPos.y < 0 || newPos.y >= 8)
 				continue;
-			if (board[newPos.x][newPos.y] != nullptr)
+			if (board[newPos.y][newPos.x] != nullptr)
 			{
-				if (board[newPos.x][newPos.y]->isWhite == isWhite)
+				if (board[newPos.y][newPos.x]->isWhite == isWhite)
 					continue;
 			}
 			if (getMove(newPos.x, newPos.y, newPos, board, cachedBoards[count]))
@@ -38,12 +40,12 @@ namespace chess {
 				for (int dir = -1; dir < 2; dir += 2)
 				{
 					// queen side castle
-					if (board[xOffset][pos.y] != nullptr)
+					if (board[pos.y][xOffset] != nullptr)
 					{
-						if (board[xOffset][pos.y]->getType() == 'R' && board[xOffset][pos.y]->getMoveCount() == 0)
+						if (board[pos.y][xOffset]->getType() == 'R' && board[pos.y][xOffset]->getMoveCount() == 0)
 						{
 							int i = 1;
-							while (board[pos.x + i * dir][pos.y] != nullptr)
+							while (board[pos.y][pos.x + i * dir] != nullptr)
 							{
 								i++;
 							}
@@ -57,7 +59,7 @@ namespace chess {
 										cachedBoards[count]))
 									{
 										// can castle, move rook as well
-										board[xOffset][pos.y]->movePiece(pos.x + dir, pos.y, cachedBoards[count]);
+										board[pos.y][xOffset]->movePiece(pos.x + dir, pos.y, cachedBoards[count]);
 										count++;
 									}
 								}
@@ -72,6 +74,11 @@ namespace chess {
 		}
 
 		return count;
+	}
+
+	void King::getCopy(std::shared_ptr<Piece>& copyTo) const
+	{
+		copyTo = std::make_shared<King>(*this);
 	}
 
 }

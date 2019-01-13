@@ -6,10 +6,11 @@ namespace chess {
 	class King : public Piece
 	{
 	private:
-		void init();
+		void getCopy(std::shared_ptr<Piece>& copyTo) const override;
 	public:
+		King(const Vec2<int>& position, const bool& white);
 		int getPossibleMoves(const Vec2<int>& kingPos, const std::shared_ptr<Piece> const (&board)[8][8],
-			std::shared_ptr<Piece>(&cachedBoards)[27][8][8]) override;
+			std::shared_ptr<Piece>(&cachedBoards)[27][8][8]) const override;
 	};
 
 }
